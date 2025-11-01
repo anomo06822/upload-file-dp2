@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { FiChevronDown, FiChevronRight, FiCopy, FiCheck, FiFilter, FiX } from 'react-icons/fi';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface DataPreviewProps {
   data: any;
@@ -29,6 +30,7 @@ interface FilterCondition {
 type FilterMap = Record<string, FilterCondition>;
 
 export default function DataPreview({ data, onSave }: DataPreviewProps) {
+  const { theme } = useTheme();
   const [viewMode, setViewMode] = useState<'tree' | 'json' | 'table'>('tree');
   const [copied, setCopied] = useState(false);
 
@@ -39,12 +41,30 @@ export default function DataPreview({ data, onSave }: DataPreviewProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const getButtonClasses = (isActive: boolean = false, variant: 'primary' | 'ghost' = 'primary') => {
+    if (theme === 'flowbite') {
+      if (variant === 'ghost') {
+        return 'px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-400 dark:hover:bg-gray-700 transition-colors';
+      }
+      return `px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+        isActive
+          ? 'text-white bg-blue-600 hover:bg-blue-700'
+          : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700'
+      }`;
+    }
+    return variant === 'ghost' ? 'btn btn-sm btn-ghost' : `btn btn-sm ${isActive ? 'btn-active' : ''}`;
+  };
+
   if (!data) {
     return (
-      <div className="card bg-base-200">
-        <div className="card-body items-center text-center">
-          <p className="text-base-content/60">暫無數據可預覽</p>
-          <p className="text-sm text-base-content/40">請先上傳或輸入 JSON 數據</p>
+      <div className={theme === 'flowbite' ? 'text-center py-8' : 'card bg-base-200'}>
+        <div className={theme === 'flowbite' ? '' : 'card-body items-center text-center'}>
+          <p className={theme === 'flowbite' ? 'text-gray-500 dark:text-gray-400' : 'text-base-content/60'}>
+            暫無數據可預覽
+          </p>
+          <p className={theme === 'flowbite' ? 'text-sm text-gray-400 dark:text-gray-500 mt-1' : 'text-sm text-base-content/40'}>
+            請先上傳或輸入 JSON 數據
+          </p>
         </div>
       </div>
     );
@@ -53,24 +73,26 @@ export default function DataPreview({ data, onSave }: DataPreviewProps) {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">數據預覽</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className={`text-xl font-bold ${theme === 'flowbite' ? 'text-gray-900 dark:text-white' : ''}`}>
+          數據預覽
+        </h2>
         <div className="flex gap-2">
-          <div className="btn-group">
+          <div className={theme === 'flowbite' ? 'inline-flex rounded-lg' : 'btn-group'}>
             <button
-              className={`btn btn-sm ${viewMode === 'tree' ? 'btn-active' : ''}`}
+              className={getButtonClasses(viewMode === 'tree')}
               onClick={() => setViewMode('tree')}
             >
               樹狀視圖
             </button>
             <button
-              className={`btn btn-sm ${viewMode === 'json' ? 'btn-active' : ''}`}
+              className={getButtonClasses(viewMode === 'json')}
               onClick={() => setViewMode('json')}
             >
               JSON 視圖
             </button>
             <button
-              className={`btn btn-sm ${viewMode === 'table' ? 'btn-active' : ''}`}
+              className={getButtonClasses(viewMode === 'table')}
               onClick={() => setViewMode('table')}
             >
               表格視圖
@@ -78,21 +100,25 @@ export default function DataPreview({ data, onSave }: DataPreviewProps) {
           </div>
           <button
             onClick={copyToClipboard}
-            className="btn btn-sm btn-ghost"
+            className={getButtonClasses(false, 'ghost')}
             title="複製 JSON"
           >
-            {copied ? <FiCheck className="text-success" /> : <FiCopy />}
+            {copied ? (
+              <FiCheck className={theme === 'flowbite' ? 'text-green-500' : 'text-success'} />
+            ) : (
+              <FiCopy />
+            )}
           </button>
         </div>
       </div>
 
       {/* Preview Content */}
-      <div className="card bg-base-200">
-        <div className="card-body">
+      <div className={theme === 'flowbite' ? 'bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4' : 'card bg-base-200'}>
+        <div className={theme === 'flowbite' ? '' : 'card-body'}>
           {viewMode === 'tree' ? (
             <TreeView data={data} />
           ) : viewMode === 'json' ? (
-            <pre className="overflow-auto max-h-96 text-sm">
+            <pre className={`overflow-auto max-h-96 text-sm ${theme === 'flowbite' ? 'text-gray-900 dark:text-gray-100' : ''}`}>
               <code>{JSON.stringify(data, null, 2)}</code>
             </pre>
           ) : (
@@ -102,29 +128,57 @@ export default function DataPreview({ data, onSave }: DataPreviewProps) {
       </div>
 
       {/* Data Statistics */}
-      <div className="stats shadow w-full">
-        <div className="stat">
-          <div className="stat-title">數據類型</div>
-          <div className="stat-value text-2xl">{getDataType(data)}</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">項目數量</div>
-          <div className="stat-value text-2xl">{getItemCount(data)}</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">數據大小</div>
-          <div className="stat-value text-2xl">
-            {(JSON.stringify(data).length / 1024).toFixed(2)} KB
+      {theme === 'flowbite' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="text-sm text-gray-500 dark:text-gray-400">數據類型</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{getDataType(data)}</div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="text-sm text-gray-500 dark:text-gray-400">項目數量</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{getItemCount(data)}</div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="text-sm text-gray-500 dark:text-gray-400">數據大小</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+              {(JSON.stringify(data).length / 1024).toFixed(2)} KB
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="stats shadow w-full">
+          <div className="stat">
+            <div className="stat-title">數據類型</div>
+            <div className="stat-value text-2xl">{getDataType(data)}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">項目數量</div>
+            <div className="stat-value text-2xl">{getItemCount(data)}</div>
+          </div>
+          <div className="stat">
+            <div className="stat-title">數據大小</div>
+            <div className="stat-value text-2xl">
+              {(JSON.stringify(data).length / 1024).toFixed(2)} KB
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Save Button */}
       {onSave && (
         <div className="flex justify-end">
-          <button onClick={onSave} className="btn btn-primary">
-            確認保存數據
-          </button>
+          {theme === 'flowbite' ? (
+            <button
+              onClick={onSave}
+              className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors"
+            >
+              確認保存數據
+            </button>
+          ) : (
+            <button onClick={onSave} className="btn btn-primary">
+              確認保存數據
+            </button>
+          )}
         </div>
       )}
     </div>
