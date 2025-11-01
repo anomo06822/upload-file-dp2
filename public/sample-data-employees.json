@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "張三",
+    "age": 25,
+    "salary": 50000,
+    "department": "技術部",
+    "active": true,
+    "city": "台北",
+    "joinDate": "2023-01-15"
+  },
+  {
+    "id": 2,
+    "name": "李四",
+    "age": 30,
+    "salary": 60000,
+    "department": "業務部",
+    "active": true,
+    "city": "台中",
+    "joinDate": "2022-06-20"
+  },
+  {
+    "id": 3,
+    "name": "王五",
+    "age": 28,
+    "salary": 55000,
+    "department": "技術部",
+    "active": false,
+    "city": "台北",
+    "joinDate": "2023-03-10"
+  },
+  {
+    "id": 4,
+    "name": "趙六",
+    "age": 35,
+    "salary": 75000,
+    "department": "管理部",
+    "active": true,
+    "city": "台北",
+    "joinDate": "2021-09-01"
+  },
+  {
+    "id": 5,
+    "name": "錢七",
+    "age": 27,
+    "salary": 52000,
+    "department": "技術部",
+    "active": true,
+    "city": "台南",
+    "joinDate": "2023-05-12"
+  },
+  {
+    "id": 6,
+    "name": "孫八",
+    "age": 32,
+    "salary": 65000,
+    "department": "業務部",
+    "active": true,
+    "city": "台中",
+    "joinDate": "2022-11-30"
+  },
+  {
+    "id": 7,
+    "name": "周九",
+    "age": 29,
+    "salary": 58000,
+    "department": "技術部",
+    "active": false,
+    "city": "台北",
+    "joinDate": "2023-02-14"
+  },
+  {
+    "id": 8,
+    "name": "吳十",
+    "age": 26,
+    "salary": 48000,
+    "department": "業務部",
+    "active": true,
+    "city": "高雄",
+    "joinDate": "2023-07-01"
+  },
+  {
+    "id": 9,
+    "name": "鄭十一",
+    "age": 33,
+    "salary": 70000,
+    "department": "管理部",
+    "active": true,
+    "city": "台北",
+    "joinDate": "2021-12-15"
+  },
+  {
+    "id": 10,
+    "name": "陳十二",
+    "age": 24,
+    "salary": 45000,
+    "department": "技術部",
+    "active": true,
+    "city": "台南",
+    "joinDate": "2023-08-20"
+  },
+  {
+    "id": 11,
+    "name": "林十三",
+    "age": 31,
+    "salary": 62000,
+    "department": "業務部",
+    "active": false,
+    "city": "台中",
+    "joinDate": "2022-04-10"
+  },
+  {
+    "id": 12,
+    "name": "黃十四",
+    "age": 28,
+    "salary": 56000,
+    "department": "技術部",
+    "active": true,
+    "city": "台北",
+    "joinDate": "2023-01-05"
+  }
+]

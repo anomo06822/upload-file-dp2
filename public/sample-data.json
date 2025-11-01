@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "張三",
+      "email": "zhangsan@example.com",
+      "age": 28,
+      "role": "開發者",
+      "skills": ["JavaScript", "React", "Node.js"],
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "李四",
+      "email": "lisi@example.com",
+      "age": 32,
+      "role": "設計師",
+      "skills": ["UI/UX", "Figma", "Photoshop"],
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "王五",
+      "email": "wangwu@example.com",
+      "age": 25,
+      "role": "產品經理",
+      "skills": ["Agile", "Jira", "數據分析"],
+      "active": false
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "created": "2024-01-01",
+    "totalUsers": 3
+  }
+}
